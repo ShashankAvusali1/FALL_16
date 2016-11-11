@@ -6,6 +6,6 @@ function [ sample ] = random_undersample( data )
     class2 = data(order,:);
     [minority_count,~] = size(class2);
     sample = datasample(class1,minority_count,'Replace',false);
-    sample = [sample; class2];
+    sample = [sample; class2]; 
 end
 
