@@ -2,7 +2,7 @@ close all;
 clc
 clear
 rng(100);
-data = load('data\german.data-numeric.txt');
+data = load('data/german.data-numeric.txt');
 order = data(:,25) == 1;
 class1 = data(order,:);
 order = data(:,25) == 2;
