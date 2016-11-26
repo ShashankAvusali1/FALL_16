@@ -10,6 +10,7 @@ from imblearn.under_sampling import ClusterCentroids
 from Optimizer import Optimizer
 from sampling import Sampling
 from sklearn.model_selection import KFold
+from rvm import RVC
 
 
 def display_results(y_pred,y_true):
@@ -59,34 +60,15 @@ minoritycount = 20
 
 [train_data, train_labels, test_data, test_labels] = split_train_test(data,labels,minority_count=minoritycount)
 
-sampler = Sampling()
-
-# [train_data,train_labels] = sampler.random_under_sampling(train_data,train_labels)
-
-# [train_data,train_labels] = sampler.random_over_sampling(train_data,train_labels)
-
-# [train_data, train_labels] = sampler.directed_under_sampling(train_data, train_labels)
-
-# [train_data, train_labels]  = sampler.directed_over_sampling(train_data, train_labels)
+# sampler = Sampling()
 
 optimizer = Optimizer()
-# bestparams = optimizer.optimize_parameters(train_data,train_labels)
-bestparams = optimizer.optimize_dos(train_data, train_labels)
-print(bestparams)
-
-# bestparams = {'C':0.01,'gamma':0.00000001}
-
-# print('#### train data shape #####')
-# print(np.shape(train_data))
-
-# print('#### test data shape ####')
-# print(np.shape(test))
+best_params = optimizer.optimize_parameters_rvm(train_data, train_labels)
 
 
-svc = SVC(C=bestparams['C'], kernel='rbf', gamma=bestparams['gamma'], shrinking=True, probability=False, class_weight={1:bestparams['weight1'],2:bestparams['weight2']}, tol=0.001, verbose=False)
-svc.fit(train_data,train_labels)
-y_pred = svc.predict(test_data)
-display_results(y_pred,test_labels)
-
-# display_results(y_pred,test_labels)
+rvc = RVC(kernel='rbf',coef1 = best_params['coef1'])
+rvc.fit(train_data, train_labels)
+prob = rvc.predict_proba(train_data)
+y_pred = rvc.predict(test_data)
+display_results(y_pred, test_labels)
 
