@@ -85,12 +85,6 @@ plt.ylabel('True Positive Rate')
 plt.title('ROC Curve ')
 plt.legend(loc="lower right")
 plt.show()
-
-#x = np.linspace(0,1,100)
-#for i in range(len(x)):
-#	y_pred = np.ones(np.shape(test_data)[0])
-#	y_pred[prob[:1]<x[i]] = 0
-	
 	
 #y_pred = rvc.predict(test_data)
 #display_results(y_pred, test_labels)

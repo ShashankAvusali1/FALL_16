@@ -61,32 +61,22 @@ minoritycount = 10
 
 sampler = Sampling()
 
-#[train_data,train_labels] = sampler.random_under_sampling(train_data,train_labels)
 
-# [train_data,train_labels] = sampler.random_over_sampling(train_data,train_labels)
+# [train_data,train_labels] = sampler.random_under_sampling(train_data,train_labels)
+
+[train_data,train_labels] = sampler.random_over_sampling(train_data,train_labels)
 
 # [train_data, train_labels] = sampler.directed_under_sampling(train_data, train_labels)
 
-[train_data, train_labels]  = sampler.directed_over_sampling(train_data, train_labels)
+#[train_data, train_labels]  = sampler.directed_over_sampling(train_data, train_labels)
 
 optimizer = Optimizer()
-bestparams = optimizer.optimize_parameters(train_data,train_labels,test_data)
-# bestparams = optimizer.optimize_dos(train_data, train_labels)
-# print(bestparams)
+y_pred = optimizer.optimize_parameters(train_data,train_labels,test_data)
+# y_pred = optimizer.optimize_dos(train_data, train_labels,test_data)
 
-# bestparams = {'C':0.01,'gamma':0.00000001}
-
-# print('#### train data shape #####')
-# print(np.shape(train_data))
-
-# print('#### test data shape ####')
-# print(np.shape(test))
-
-
-svc = SVC(C=bestparams['C'], kernel='rbf', gamma=bestparams['gamma'], shrinking=True, probability=False, class_weight={0:bestparams['weight1'],1:bestparams['weight2']}, tol=0.001, verbose=False)
-svc.fit(train_data,train_labels)
-y_pred = svc.predict(test_data)
+# svc = SVC(C=bestparams['C'], kernel='rbf', gamma=bestparams['gamma'], shrinking=True, probability=False, class_weight='auto', tol=0.001, verbose=False)
+# svc.fit(train_data,train_labels)
+# y_pred = svc.predict(test_data)
 display_results(y_pred,test_labels)
 
-# display_results(y_pred,test_labels)
 
