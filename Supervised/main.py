@@ -55,19 +55,19 @@ scaler  = StandardScaler()
 labels = data[:,24].astype(int)
 data = scaler.fit_transform(data[:,:20])
 
-minoritycount = 5
+minoritycount = 10
 
 [train_data, train_labels, test_data, test_labels] = split_train_test(data,labels,minority_count=minoritycount)
 
 sampler = Sampling()
 
-[train_data,train_labels] = sampler.random_under_sampling(train_data,train_labels)
+#[train_data,train_labels] = sampler.random_under_sampling(train_data,train_labels)
 
 # [train_data,train_labels] = sampler.random_over_sampling(train_data,train_labels)
 
 # [train_data, train_labels] = sampler.directed_under_sampling(train_data, train_labels)
 
-# [train_data, train_labels]  = sampler.directed_over_sampling(train_data, train_labels)
+[train_data, train_labels]  = sampler.directed_over_sampling(train_data, train_labels)
 
 optimizer = Optimizer()
 bestparams = optimizer.optimize_parameters(train_data,train_labels,test_data)
