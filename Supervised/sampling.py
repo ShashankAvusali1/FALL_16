@@ -1,7 +1,7 @@
 import numpy as np
 from imblearn.over_sampling import RandomOverSampler
 from imblearn.under_sampling import RandomUnderSampler
-from imblearn.under_sampling import NeighbourhoodCleaningRule
+from imblearn.under_sampling import CondensedNearestNeighbour
 from imblearn.over_sampling import SMOTE
 
 
@@ -21,7 +21,7 @@ class Sampling(object):
 		return new_data,new_labels
 
 	def directed_under_sampling(self, data, labels):
-		sampler = NeighbourhoodCleaningRule()
+		sampler = CondensedNearestNeighbour()
 		new_data, new_labels = sampler.fit_sample(data,labels)
 		return new_data,new_labels
 

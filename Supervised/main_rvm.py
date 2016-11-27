@@ -63,12 +63,12 @@ minoritycount = 20
 # sampler = Sampling()
 
 optimizer = Optimizer()
-best_params = optimizer.optimize_parameters_rvm(train_data, train_labels)
+y_pred = optimizer.optimize_parameters_rvm(train_data, train_labels,test_data)
 
 
-rvc = RVC(kernel='rbf',coef1 = best_params['coef1'])
-rvc.fit(train_data, train_labels)
-prob = rvc.predict_proba(train_data)
-y_pred = rvc.predict(test_data)
+# rvc = RVC(kernel='rbf',coef1 = best_params['coef1'])
+# rvc.fit(train_data, train_labels)
+# prob = rvc.predict_proba(train_data)
+# y_pred = rvc.predict(test_data)
 display_results(y_pred, test_labels)
 

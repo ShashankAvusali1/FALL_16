@@ -31,11 +31,11 @@ def split_train_test(data, labels, minority_count):
 	class2 = data[np.where(labels == 2)]
 
 	train_data = np.vstack((class1[:majority_train],class2[:minority_train]))
-	train_labels = np.vstack((np.ones((majority_train,1)),np.ones((minority_count,1))*2))
+	train_labels = np.vstack((np.zeros((majority_train,1)),np.ones((minority_count,1))))
 	train_labels = np.reshape(train_labels,majority_train+minority_train)
 
 	test_data = np.vstack((class1[majority_train:],class2[100:]))
-	test_labels = np.vstack((np.ones((majority_test,1)),np.ones((minority_test,1))*2))
+	test_labels = np.vstack((np.zeros((majority_test,1)),np.ones((minority_test,1))))
 	test_labels = np.reshape(test_labels,minority_test+majority_test)
 
 	print('####')
@@ -55,13 +55,13 @@ scaler  = StandardScaler()
 labels = data[:,24].astype(int)
 data = scaler.fit_transform(data[:,:20])
 
-minoritycount = 20
+minoritycount = 5
 
 [train_data, train_labels, test_data, test_labels] = split_train_test(data,labels,minority_count=minoritycount)
 
 sampler = Sampling()
 
-# [train_data,train_labels] = sampler.random_under_sampling(train_data,train_labels)
+[train_data,train_labels] = sampler.random_under_sampling(train_data,train_labels)
 
 # [train_data,train_labels] = sampler.random_over_sampling(train_data,train_labels)
 
@@ -70,9 +70,9 @@ sampler = Sampling()
 # [train_data, train_labels]  = sampler.directed_over_sampling(train_data, train_labels)
 
 optimizer = Optimizer()
-# bestparams = optimizer.optimize_parameters(train_data,train_labels)
-bestparams = optimizer.optimize_dos(train_data, train_labels)
-print(bestparams)
+bestparams = optimizer.optimize_parameters(train_data,train_labels,test_data)
+# bestparams = optimizer.optimize_dos(train_data, train_labels)
+# print(bestparams)
 
 # bestparams = {'C':0.01,'gamma':0.00000001}
 
@@ -83,7 +83,7 @@ print(bestparams)
 # print(np.shape(test))
 
 
-svc = SVC(C=bestparams['C'], kernel='rbf', gamma=bestparams['gamma'], shrinking=True, probability=False, class_weight={1:bestparams['weight1'],2:bestparams['weight2']}, tol=0.001, verbose=False)
+svc = SVC(C=bestparams['C'], kernel='rbf', gamma=bestparams['gamma'], shrinking=True, probability=False, class_weight={0:bestparams['weight1'],1:bestparams['weight2']}, tol=0.001, verbose=False)
 svc.fit(train_data,train_labels)
 y_pred = svc.predict(test_data)
 display_results(y_pred,test_labels)
