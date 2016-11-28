@@ -56,12 +56,14 @@ scaler  = StandardScaler()
 labels = data[:,24].astype(int)
 data = scaler.fit_transform(data[:,:20])
 
-minoritycount = 100
+minoritycount = 20
 
 [train_data, train_labels, test_data, test_labels] = split_train_test(data,labels,minority_count=minoritycount)
 
 sampler = Sampling()
 #[train_data,train_labels] = sampler.random_under_sampling(train_data,train_labels)
+
+#[train_data, train_labels] = sampler.directed_under_sampling(train_data, train_labels)
 
 optimizer = Optimizer()
 best_params = optimizer.optimize_parameters_rvm(train_data, train_labels,test_data)

@@ -63,7 +63,7 @@ class Optimizer(object):
 
 		[train_data,train_labels] = self.sampler.random_over_sampling(train_data,train_labels)
 		groups = train_data[:,20]
-		train_data = train_data[:,:19]
+		train_data = train_data[:,:20]
 		C_range = np.logspace(-4,5,13,base=2)
 		gamma_range = np.logspace(-9,5,13,base=2)
 		param_grid = dict(gamma=gamma_range, C=C_range)
